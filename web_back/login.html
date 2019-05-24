@@ -59,47 +59,164 @@
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 <script>
+    // $(function () {
+    //     // 取消form表单的默认提交事件
+    //     $(".login_form").submit(function (event) {
+    //         event.preventDefault();
+    //     })
+    //     $(".input_sub").click(function (event) {
+    //         // 获得用户输入的手机号/邮箱和密码
+    //         var username = $(".input_txt").val().trim();
+    //         var password = $(".input_pass").val().trim();
+    //         // 判断用户输入的是不是为空
+    //         if (username == "" || password == "") {
+    //             // 提醒
+    //             $(".modal-body p").text("用户名,密码不能为空");
+    //             $('.modal').modal();
+    //             return;
+    //         }
+    //         // 调用接口数据
+    //         $.ajax({
+    //             url: "https://autumnfish.cn/big/admin/login",
+    //             type: "post",
+    //             data: {
+    //                 user_name: username,
+    //                 password: password,
+    //             },
+    //             success: function (backData) {
+    //                 console.log(backData);
+    //                 if (backData.code == 200) {
+    //                     $(".modal-body p").text("欢迎回来");
+    //                     $('.modal').modal();
+    //                     setTimeout(function(){
+    //                         window.location.href = "./index.html"
+    //                     },1000)
+    //                 }
+    //                 else if (backData.code == 400) {
+    //                     $(".modal-body p").text("用户名,密码错误")
+    //                     $('.modal').modal()
+    //                 }
+    //             }
+    //         })
+
+    //     })
+    // })
     $(function () {
-        // 取消form表单的默认提交事件
+        // 给from去掉默认提交事假
         $(".login_form").submit(function (event) {
             event.preventDefault();
         })
-        $(".input_sub").click(function (event) {
-            // 获得用户输入的手机号/邮箱和密码
-            var username = $(".input_txt").val().trim();
+        // 给登录按钮加点击事件
+        $(".input_sub").click(function () {
+            start();
+            // // 拿到用户输入的用户名和密码
+            // var user_name = $(".input_txt").val().trim();
+            // var password = $(".input_pass").val().trim();
+            // // 判断用户输入的是不是为空
+            // if (user_name == "" || password == "") {
+            //     $(".modal-body p").text("请输入用户名和密码")
+            //     $('.modal').modal();
+            //     return;
+            // }
+            // // 调用接口
+            // $.ajax({
+            //     url: "https://autumnfish.cn/big/admin/login",
+            //     type: "post",
+            //     data: {
+            //         user_name: user_name,
+            //         password: password,
+            //     },
+            //     success: function (dataBack) {
+            //         console.log(dataBack);
+            //         if (dataBack.code == 200) {
+            //             $(".modal-body p").text('欢迎回来');
+            //             $('.modal').modal();
+            //             setTimeout(function () {
+            //                 window.location.href = "./index.html"
+            //             }, 1000)
+            //         }
+            //         else if (dataBack.code == 400) {
+            //             $(".modal-body p").text("输入用户名,密码错误");
+            //             $('.modal').modal();
+            //         }
+
+            //     }
+            // })
+        })
+        // // 给文本框设置键盘按下事件
+        $(".input_txt,input_pass").click(function (event) {
+            if (event.keyCode == 13) {
+                start();
+                //         // 拿到用户输入的用户名和密码
+                //         var user_name = $(".input_txt").val().trim();
+                //         var password = $(".input_pass").val().trim();
+                //         // 判断用户输入的是不是为空
+                //         if (user_name == "" || password == "") {
+                //             $(".modal-body p").text("请输入用户名和密码")
+                //             $('.modal').modal();
+                //             return;
+                //         }
+                //         // 调用接口
+                //         $.ajax({
+                //             url: "https://autumnfish.cn/big/admin/login",
+                //             type: "post",
+                //             data: {
+                //                 user_name: user_name,
+                //                 password: password,
+                //             },
+                //             success: function (dataBack) {
+                //                 console.log(dataBack);
+                //                 if (dataBack.code == 200) {
+                //                     $(".modal-body p").text('欢迎回来');
+                //                     $('.modal').modal();
+                //                     setTimeout(function () {
+                //                         window.location.href = "./index.html"
+                //                     }, 1000)
+                //                 }
+                //                 else if (dataBack.code == 400) {
+                //                     $(".modal-body p").text("输入用户名,密码错误");
+                //                     $('.modal').modal();
+                //                 }
+
+                //             }
+                //         })
+            }
+        })
+        function start() {
+            // 拿到用户输入的用户名和密码
+            var user_name = $(".input_txt").val().trim();
             var password = $(".input_pass").val().trim();
             // 判断用户输入的是不是为空
-            if (username == "" || password == "") {
-                // 提醒
-                $(".modal-body p").text("用户名,密码不能为空");
+            if (user_name == "" || password == "") {
+                $(".modal-body p").text("请输入用户名和密码")
                 $('.modal').modal();
                 return;
             }
-            // 调用接口数据
+            // 调用接口
             $.ajax({
                 url: "https://autumnfish.cn/big/admin/login",
                 type: "post",
                 data: {
-                    user_name: username,
+                    user_name: user_name,
                     password: password,
                 },
-                success: function (backData) {
-                    console.log(backData);
-                    if (backData.code == 200) {
-                        $(".modal-body p").text("欢迎回来");
+                success: function (dataBack) {
+                    console.log(dataBack);
+                    if (dataBack.code == 200) {
+                        $(".modal-body p").text('欢迎回来');
                         $('.modal').modal();
-                        setTimeout(function(){
+                        setTimeout(function () {
                             window.location.href = "./index.html"
-                        },1000)
+                        }, 1000)
                     }
-                    else if (backData.code == 400) {
-                        $(".modal-body p").text("用户名,密码错误")
-                        $('.modal').modal()
+                    else if (dataBack.code == 400) {
+                        $(".modal-body p").text("输入用户名,密码错误");
+                        $('.modal').modal();
                     }
+
                 }
             })
-
-        })
+        }
     })
 
 
