@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -28,9 +29,78 @@
                 <input type="submit" class="input_sub" value="登 录">
             </form>
         </div>
-
-    </div> 
+    </div>
+    <!-- 模态框 -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small
+        modal</button>
+    <!-- 高级模态框 -->
+    <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <p>账号密码错误</p>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 </body>
 
 </html>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        // 取消form表单的默认提交事件
+        $(".login_form").submit(function (event) {
+            event.preventDefault();
+        })
+        $(".input_sub").click(function (event) {
+            // 获得用户输入的手机号/邮箱和密码
+            var username = $(".input_txt").val().trim();
+            var password = $(".input_pass").val().trim();
+            // 判断用户输入的是不是为空
+            if (username == "" || password == "") {
+                // 提醒
+                $(".modal-body p").text("用户名,密码不能为空");
+                $('.modal').modal();
+                return;
+            }
+            // 调用接口数据
+            $.ajax({
+                url: "https://autumnfish.cn/big/admin/login",
+                type: "post",
+                data: {
+                    user_name: username,
+                    password: password,
+                },
+                success: function (backData) {
+                    console.log(backData);
+                    if (backData.code == 200) {
+                        $(".modal-body p").text("欢迎回来");
+                        $('.modal').modal();
+                        setTimeout(function(){
+                            window.location.href = "./index.html"
+                        },1000)
+                    }
+                    else if (backData.code == 400) {
+                        $(".modal-body p").text("用户名,密码错误")
+                        $('.modal').modal()
+                    }
+                }
+            })
+
+        })
+    })
+
+
+</script>
