@@ -19,7 +19,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <span>欢迎&nbsp;&nbsp; <i>李思思</i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -150,7 +150,30 @@
                     }
                 })
             })
+            // 获取用户信息（index.html）
 
+            // 请求地址：https://autumnfish.cn/big/admin/getuser
+
+            // 请求方式：get
+
+            // 请求参数：无
+
+            // 步骤
+
+            // 1. 进入到首页之后
+            // 2. 通过ajax获取用户信息
+            // 3. 数据获取到之后 渲染到页面上即可
+            $.ajax({
+                url:"https://autumnfish.cn/big/admin/getuser",
+                type:"get",
+                success:function(dataBack){
+                    console.log(dataBack);
+                    $(".user_info img").attr('src',dataBack.data.user_pic);
+                    $('.user_center_link img').attr('src', dataBack.data.user_pic)
+                    $(".user_info span i").html(dataBack.data.nickname);
+                    // $(".user_info span").html("欢迎&nbsp;&nbsp;"+dataBack.data.nickname);
+                }
+            })
         })
 
     </script>
