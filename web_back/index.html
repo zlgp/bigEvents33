@@ -139,7 +139,7 @@
             // 点击确认退出
             $(".btn-logout").click(function () {
                 $.ajax({
-                    url: "https://autumnfish.cn/big/admin/logout",
+                    url: "http://localhost:8000/admin/logout",
                     type: "post",
                     success: function (dataBack) {
                         console.log(dataBack);
@@ -152,7 +152,7 @@
             })
             // 获取用户信息（index.html）
 
-            // 请求地址：https://autumnfish.cn/big/admin/getuser
+            // 请求地址：http://localhost:8000/admin/getuser
 
             // 请求方式：get
 
@@ -164,7 +164,7 @@
             // 2. 通过ajax获取用户信息
             // 3. 数据获取到之后 渲染到页面上即可
             $.ajax({
-                url:"https://autumnfish.cn/big/admin/getuser",
+                url:"http://localhost:8000/admin/getuser",
                 type:"get",
                 success:function(dataBack){
                     console.log(dataBack);
