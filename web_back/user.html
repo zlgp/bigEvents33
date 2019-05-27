@@ -92,7 +92,7 @@
 
         // 进入之后获取用户数据
 
-        // 请求地址：https://autumnfish.cn/big/admin/userinfo_get 
+        // 请求地址：http://localhost:8000/admin/userinfo_get 
 
         // 请求方式：get
 
@@ -105,7 +105,7 @@
         // 3. 数据获取到之后渲染到页面上
         $(function () {
             $.ajax({
-                url: "https://autumnfish.cn/big/admin/userinfo_get ",
+                url: "http://localhost:8000/admin/userinfo_get ",
                 type: "get",
                 success: function (dataBack) {
                     console.log(dataBack);
@@ -125,7 +125,7 @@
             })
 
             // 用户信息修改
-            // 请求地址：https://autumnfish.cn/big/admin/userinfo_edit 
+            // 请求地址：http://localhost:8000/admin/userinfo_edit 
             // 请求方式：post
             // 请求参数：使用formdata提交
             // 步骤
@@ -144,7 +144,7 @@
                 e.preventDefault();
                 var formData = new FormData($('.article_form')[0]);
                 $.ajax({
-                    url: "https://autumnfish.cn/big/admin/userinfo_edit",
+                    url: "http://localhost:8000/admin/userinfo_edit",
                     type: "post",
                     data: formData,
                     contentType: false,
