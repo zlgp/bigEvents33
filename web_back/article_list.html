@@ -383,29 +383,12 @@
              3. 默认不考虑筛选，先选择页码和每页的数据条数即可
              4. 渲染到页面上  */
             var myPage = 1;
-            function getData() {
-                $.ajax({
-                    url: 'http://localhost:8000/admin/search',
-                    type: 'get',
-                    data: {
-                        page: myPage,
-                        perpage: 8,
-                        // 动态获得下拉框的值
-                        state: $("#selStatus").val(),
-                        type:$("#selCategory").val(),
-                    },
-                    success: function (dataBack) {
-                        console.log(dataBack);
-                        var html = template('tem', dataBack);
-                        $('tbody').html(html);
-                    }
-                })
-            }
-
             // 分页,用插件做
             var $pagination = $('.pagination ');
+            // 总页数单独定义
+            var myTotalPages = 20;
             var defaultOpts = {
-                totalPages: 20,
+                totalPages: myTotalPages,
                 first: "第一页",
                 prev: "上一页",
                 next: "下一页",
@@ -417,8 +400,42 @@
                     getData()
                 }
             };
+
             // 把设置传递给分页方法 并生效
             $pagination.twbsPagination(defaultOpts);
+            function getData() {
+                $.ajax({
+                    url: 'http://localhost:8000/admin/search',
+                    type: 'get',
+                    data: {
+                        page: myPage,
+                        perpage: 8,
+                        // 动态获得下拉框的值
+                        state: $("#selStatus").val(),
+                        type: $("#selCategory").val(),
+                    },
+                    success: function (dataBack) {
+                        console.log(dataBack);
+                        var html = template('tem', dataBack);
+                        $('tbody').html(html);
+                        // // 重新设置页码 如果当前总页数 和服务器返回的新总页数不相等 才重新设置
+                        if (myTotalPages != dataBack.totalPage) {
+                            // 保存新总页数
+                            myTotalPages = dataBack.totalPage
+                            // 筛选之后总页数变少了，内容改变了一般都是从头开始看
+                            var currentPage = 1
+                            $pagination.twbsPagination('destroy')
+                            // 重新设置
+                            $pagination.twbsPagination(
+                                $.extend({}, defaultOpts, {
+                                    startPage: currentPage,
+                                    totalPages: myTotalPages
+                                })
+                            )
+                        }
+                    }
+                })
+            }
             // 给筛选按钮加点击事件
             $("#btnSearch").click(function (e) {
                 e.preventDefault();
@@ -431,7 +448,7 @@
                 success: function (dataBack) {
                     console.log(dataBack);
                     // 調用核心方法
-                    var html = template("tem1",dataBack);
+                    var html = template("tem1", dataBack);
                     // 用html會把全部分類覆蓋掉,所有要用添加子元素的方法
                     $("#selCategory").append(html);
 
