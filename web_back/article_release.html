@@ -27,19 +27,20 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" id="exampleInputFile">
+                        <img src="" alt="" class="preview">
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
+                        <select class="form-control" name="type">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -49,7 +50,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">发布时间：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label" name="date">发布时间：</label>
                     <div class="col-sm-4">
 
                         <div class="input-group">
@@ -65,21 +66,90 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">
+                        <textarea class="form-control" id="rich_content"  placeholder="文章内容">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda fugiat illo nihil molestias ab. Laborum eius non atque, totam sapiente quae obcaecati assumenda ratione inventore pariatur maiores, qui libero delectus.
                             </textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">发布</button>
+                        <button type="submit" class="btn btn-success btn-publish">发布</button>
                         <button type="submit" class="btn btn-default">存为草稿</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <!-- 导入模板文件 -->
+    <script src="./js/template-web.js"></script>
+    <!-- 定义模板 -->
+    <script id="cate" type="text/html">
+        {{each data}}
+        <option value="{{$value.id}}">{{$value.name}}</option>
+        {{/each}}
+    </script>
+    <script>
+        //    图像预览
+        $(function () {
+            // 预览 change事件
+            $('#exampleInputFile').change(function (e) {
+                var file = this.files[0]
+                var url = URL.createObjectURL(file)
+                $(this)
+                    .prev('img.preview')
+                    .attr('src', url)
+            })
+            // 分类获取
+            $.ajax({
+                url: 'http://localhost:8000/admin/category_search',
+                type: 'get',
+                success: function (backData) {
+                    // console.log(backData)
+                    // 方法
+                    // 渲染
+                    $('select').html(template('cate', backData))
+                }
+            })
 
+            // 文章发布
+            $('.btn-publish').click(function (e) {
+                e.preventDefault()
+                // 取值 没有 content state
+                var formData = new FormData($('form')[0])
+                // formData.append追加
+                formData.append('state', '已发布')
+                formData.append('content', tinyMCE.activeEditor.getContent())
+                // 发送
+                $.ajax({
+                    url: 'http://localhost:8000/admin/article_publish',
+                    type: 'post',
+                    data: formData,
+                    contentType: false, //  不设置请求头
+                    processData: false, // 不格式化value为key=value，
+                    success: function (backData) {
+                        setTimeout(function () {
+                            if (backData.code == 201) {
+                                // 提示 并跳转
+                                //   console.log(backData)
+                                alert('兄嘚，弄好啦')
+                                window.location.href = './index.html'
+                            }
+                        }, 1000)
+                    }
+                })
+            })
+        })
+
+
+
+
+
+
+
+
+
+
+    </script>
 </body>
 
 </html>
